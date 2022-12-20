@@ -3,6 +3,8 @@ import {
   IMailAdapterService,
   MAIL_ADAPTER_SERVICE,
 } from 'src/domain/adapters/mail.adapter';
+import { MailModule } from 'src/infra/modules/mail.module';
+import { OtherMailService } from 'src/infra/services/other-mail.service';
 import { SMTPMailService } from 'src/infra/services/smtp-mail.service';
 import { AppController } from './app.controller';
 
@@ -20,8 +22,18 @@ const MailService: Provider<IMailAdapterService> = {
 };
 
 @Module({
-  imports: [],
+  imports: [
+    // Use dynamic module inject custom mail service:
+    // MailModule.register(OtherMailService)
+    // ------------------------------
+    // Use dynamic module inject default mail service:
+    // MailModule,
+  ],
   controllers: [AppController],
-  providers: [MailService],
+  providers: [
+    // Use SMPTEmailService in provider object
+    // Se usar o MailModule, não precisa usar o MailService aqui.
+    MailService,
+  ],
 })
 export class AppModule {}
